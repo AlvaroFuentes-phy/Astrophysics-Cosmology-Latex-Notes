@@ -19,3 +19,4 @@ The PDF document is organized into six chapters, covering everything from observ
 
 # Acknowledgements
 These notes were developed with the invaluable support and mentorship of Professor Antonio José Cuesta Vázquez. I am deeply grateful for his guidance and dedication throughout the course, which were fundamental in the development of this material.
+This work is dedicated to my grandmother, Antonia. Thank you for taking me to see the stars.
