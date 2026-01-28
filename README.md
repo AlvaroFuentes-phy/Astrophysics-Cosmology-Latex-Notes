@@ -2,6 +2,8 @@
 Lecture notes for the Astrophysics and Cosmology course at UCO (University of Córdoba). Typeset in LaTeX. Images belong to their respective owners. 
 Each chapter is prefaced with an image from NASA's 'Astronomy Picture of the Day' (APOD) project. These images are used for educational purposes, and authorship belongs to the photographers and institutions credited by NASA in each case.
 
+These notes are intended as a foundational compendium for future projects in this field.
+
 #  Contents 
 The PDF document is organized into six chapters, covering everything from observational techniques to theoretical cosmological models:
 
