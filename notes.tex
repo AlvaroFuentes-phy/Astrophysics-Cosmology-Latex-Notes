@@ -1,4 +1,4 @@
-\documentclass[openany]{book}
+ \documentclass[openany]{book}
 
 % =======================
 % Paquetes básicos
@@ -2506,24 +2506,14 @@ y la ecuación de la opacidad (scattering) (\ref{scattering}) y aplicando que el
 \begin{equation*}
     F=\frac{L_r}{4\pi r^2}
 \end{equation*}
-\subsection{Ecuación de estado}
 
-Las variables intensivas
-dentro de una estrella
-(presión, densidad, y
-temperatura) están
-relacionadas entre sí como
-un gas ideal. 
+\subsection{Ecuación de estado}
+Las variables intensivas dentro de una estrella
+(presión, densidad, y temperatura) están relacionadas entre sí como un gas ideal. 
 \\
-Esto nos dice que hay
-equilibrio termodinámico
-local: se puede definir una
-presión, una densidad, y
-una temperatura, pero sus
-valores no son uniformes
-en toda la estrella, sino
-que su valor es distinto en
-cada capa esférica.
+Esto nos dice que hay equilibrio termodinámico
+local: se puede definir una presión, una densidad, y una temperatura, pero sus
+valores no son uniformes en toda la estrella, sino que su valor es distinto en cada capa esférica.
 \\
 La expresión
 \begin{formula}
@@ -2544,13 +2534,9 @@ En la parte convectiva de la estrella hay que reemplazar la ecuación de transpo
 
 \subsection{Ecuación de transporte convectivo (Ecuación de la temperatura}
 
-El cambio de temperatura
-de una capa esférica a la
-siguiente dependerá del
-gradiente de presiones
-en dicha capa, que viene
-dado por la condición de
-equilibrio hidrostático. 
+El cambio de temperatura de una capa esférica a la siguiente dependerá del
+gradiente de presiones en dicha capa, que viene
+dado por la condición de equilibrio hidrostático. 
 \begin{equation*}
     \frac{T(r)}{P(r)}\frac{dP}{dr}=\frac{T(r)}{\frac{k_B}{m}\rho(r)T(r)}\Bigl( -\rho(r)\frac{GM_r(r)}{r^2} \Bigl)=-\frac{m}{k_B}\frac{GM_r(r)}{r^2}
 \end{equation*}
@@ -2639,9 +2625,7 @@ En este punto, y para el desarrollo que continuaremos haciendo más adelante, va
 
 \subsection{Integración en un solo paso}
 Encontrar la solución de una ecuación diferencial no siempre es sencillo, en esta sección, vamos a estudiar un método de aproximación para resolver las ecuaciones que rigen el interior estelar. 
-
 \\ 
-
 Este método sirve para relacionar el valor de las incógnitas en el centro $(r=0)$ y en el borde de la estrella $(r=R)$. Distinguimos ahora entre las variables que se anulan en el centro y las que se anulan en el borde de la estrella, para ello hemos confeccionado la siguiente tabla: 
 
 
@@ -2722,7 +2706,7 @@ hemos dejado una variable en función de la otra mediante una constante universa
 \begin{formula}
     \begin{equation}
         \label{relación_masa_luminosidad}
-        L\propto M
+        L\propto M^3
     \end{equation}
 \end{formula}
 \\
@@ -2738,7 +2722,7 @@ El resto de relaciones que se detallan a continuación son aproximadas:
     \begin{equation*}
     \frac{M}{R}=\frac{2T_0k_b}{Gm_p} \approx\text{cte} 
     \end{equation*}
-    y la relación radio masa es: 
+    y la relación radio-masa es: 
     \begin{equation*}
         R \propto M^3
     \end{equation*}
@@ -2773,7 +2757,7 @@ El resto de relaciones que se detallan a continuación son aproximadas:
         \end{equation*}
     \end{formula}
 \end{enumerate}
-Usando estas relaciones podemos conocer el tiempo de vida (nuclear) de una estrella en relación con su masa, tenemos que: 
+Usando estas relaciones podemos conocer el \textbf{tiempo de vida} (nuclear) de una estrella en relación con su masa, tenemos que: 
 \begin{equation*}
     t_{nuc} \propto\frac{M}{L} \propto \frac{M}{M^3} \propto \frac{1}{M^2}
 \end{equation*}
