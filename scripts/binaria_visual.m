@@ -1,4 +1,4 @@
-% Simulación de Sistema Binario y Curva de Luz
+
 clear; clc; close all;
 
 % --- Parámetros Físicos ---
