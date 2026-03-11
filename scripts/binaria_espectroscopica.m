@@ -1,79 +1,80 @@
-% Simulación de Binaria Espectroscópica 
+
 clear; clc; close all;
 
-% --- Parámetros de la Simulación ---
-P = 15;             % Periodo orbital (más alto = más lento)
-a1 = 1.8; a2 = 3;   % Radios de las órbitas
-v_max = 0.08;       % Amplitud del desplazamiento (exagerado para visualización)
-t = 0;
-dt = 0.05;          % Paso de tiempo pequeño para suavidad
+% Parámetros físicos
+P = 12; a1 = 1.6; a2 = 2.8; v_scale = 35; t = 0; dt = 0.05;
 
-% --- Configuración de la Figura ---
-fig = figure('Color', 'k', 'Position', [100, 100, 900, 600]);
+% Configuración de la figura
+fig = figure('Color', [0.05 0.05 0.1], 'Position', [100, 100, 1000, 750]);
 
-% Subplot 1: Vista Orbital
-ax1 = subplot(2,1,1);
-hold on; axis equal; axis off;
-xlim([-5 5]); ylim([-5 5]);
-title('Sistema Binario Espectroscópico', 'Color', 'w', 'FontSize', 14);
+% --- Subplot 1: Sistema Orbital ---
+ax1 = subplot('Position', [0.1, 0.45, 0.8, 0.5]);
+hold on; axis equal; axis off; xlim([-4.5 4.5]); ylim([-4.5 4.5]);
+title('Movimiento Orbital y Efecto Doppler', 'Color', 'w', 'FontSize', 16);
+theta_orb = linspace(0, 2*pi, 200);
+plot(ax1, a1*cos(theta_orb), a1*sin(theta_orb), 'w:', 'LineWidth', 1, 'Color', [1 1 1 0.2]);
+plot(ax1, a2*cos(theta_orb), a2*sin(theta_orb), 'w:', 'LineWidth', 1, 'Color', [1 1 1 0.2]);
+plot(ax1, 0, 0, 'y+', 'MarkerSize', 10); % Centro de masas
 
-% Dibujar órbitas
-theta_range = linspace(0, 2*pi, 100);
-plot(a1*cos(theta_range), a1*sin(theta_range), 'w:', 'LineWidth', 0.5);
-plot(a2*cos(theta_range), a2*sin(theta_range), 'w:', 'LineWidth', 0.5);
-plot(0, 0, 'r+', 'MarkerSize', 8); % Centro de masas
+% Estrellas y Estelas
+h1_tail = animatedline('Color', [0.5 0.7 1], 'LineWidth', 1.5, 'MaximumNumPoints', 30);
+h2_tail = animatedline('Color', [1 0.6 0.2], 'LineWidth', 1.5, 'MaximumNumPoints', 30);
+h1 = scatter(0, 0, 160, 'white', 'filled', 'MarkerEdgeColor', [0.4 0.6 1]);
+h2 = scatter(0, 0, 90, [1 0.8 0.4], 'filled', 'MarkerEdgeColor', [1 0.4 0]);
 
-% Estrellas
-h1 = plot(0,0, 'wo', 'MarkerSize', 12, 'MarkerFaceColor', [0.8 0.9 1]); % Estrella A
-h2 = plot(0,0, 'wo', 'MarkerSize', 8, 'MarkerFaceColor', [1 0.7 0.4]);  % Estrella B
-text_a = text(0,0,'A','Color','w','VerticalAlignment','bottom');
-text_b = text(0,0,'B','Color','w','VerticalAlignment','bottom');
-
-% Subplot 2: Espectro Completo
-ax2 = subplot(2,1,2);
-hold on;
-set(gca, 'Color', 'none', 'XColor', 'w', 'YColor', 'none', 'Box', 'on');
+% --- Subplot 2: Espectro Continuo ---
+ax2 = subplot('Position', [0.1, 0.1, 0.8, 0.25]);
+hold on; set(ax2, 'Color', 'k', 'XColor', 'w', 'YColor', 'none', 'Box', 'on');
 xlim([400 700]); ylim([0 1]);
-xlabel('Longitud de Onda (nm)', 'Color', 'w');
+xlabel('Longitud de Onda [nm]', 'Color', 'w', 'FontSize', 12);
 
-% Crear fondo de arcoíris (gradiente espectral)
-map = jet(256); % Usamos el colormap 'jet' para simular el espectro
-imagesc([400 700], [0 1], repmat(reshape(map, [1, 256, 3]), 10, 1));
-set(gca, 'YTick', []);
+% Generación de degradado espectral suave (Interpolación CIE-like)
+wv_pts = [400 440 490 510 580 645 700]; % Puntos de control (nm)
+rgbs = [0.4 0 0.5;   % Violeta
+        0 0 1;       % Azul
+        0 1 1;       % Cian
+        0 1 0;       % Verde
+        1 1 0;       % Amarillo
+        1 0 0;       % Rojo
+        0.4 0 0];    % Rojo oscuro
 
-% Líneas de absorción (Negras)
-lineA = plot([550 550], [0.1 0.9], 'k', 'LineWidth', 2.5);
-lineB = plot([550 550], [0.1 0.9], 'k', 'LineWidth', 1.5);
-text(410, 0.95, 'Espectro Observado', 'Color', 'w', 'FontWeight', 'bold');
-legend([lineA, lineB], {'Línea Estrella A', 'Línea Estrella B'}, 'TextColor', 'w', 'Location', 'northeast');
+lambda_axis = linspace(400, 700, 1000);
+full_spec = interp1(wv_pts, rgbs, lambda_axis, 'pchip'); % 'pchip' para suavidad máxima
+full_spec = max(0, min(1, full_spec)); % Asegurar rango [0,1]
+
+% Dibujar el fondo del espectro
+image([400 700], [0 1], reshape(full_spec, [1, 1000, 3]), 'Parent', ax2);
+
+% Líneas de absorción dinámicas
+lineA = plot([550 550], [0 1], 'k', 'LineWidth', 4, 'Parent', ax2);
+lineB = plot([550 550], [0 1], 'k', 'LineWidth', 2, 'Parent', ax2);
+uistack(lineA, 'top'); uistack(lineB, 'top'); % Líneas negras SIEMPRE arriba
 
 % --- Bucle de Animación ---
 while ishandle(fig)
-    % Posiciones orbitales
     theta = 2 * pi * t / P;
+    
+    % Posiciones
     x1 = a1 * cos(theta); y1 = a1 * sin(theta);
     x2 = -a2 * cos(theta); y2 = -a2 * sin(theta);
     
-    % Actualizar estrellas
+    % Actualizar estrellas y estelas
     set(h1, 'XData', x1, 'YData', y1);
     set(h2, 'XData', x2, 'YData', y2);
-    set(text_a, 'Position', [x1+0.2, y1+0.2]);
-    set(text_b, 'Position', [x2+0.2, y2+0.2]);
     
-    % Velocidad Radial (Eje X hacia el observador)
-    % Suponemos observador en el eje X lejano
-    vr1 = v_max * sin(theta);
-    vr2 = -v_max * (a2/a1) * sin(theta);
+    % Velocidad radial (proyección vertical hacia el observador)
+    vr1 = y1 / a1; 
+    vr2 = y2 / a2;
     
-    % Longitudes de onda desplazadas (Base 550 nm)
-    lamA = 550 * (1 + vr1);
-    lamB = 550 * (1 + vr2);
+    % Desplazamiento Doppler
+    lamA = 550 + (vr1 * v_scale);
+    lamB = 550 + (vr2 * v_scale);
     
-    % Actualizar líneas en el espectro
+    % Actualizar líneas
     set(lineA, 'XData', [lamA lamA]);
     set(lineB, 'XData', [lamB lamB]);
     
     t = t + dt;
-    drawnow;
-    pause(0.02); % Pausa para controlar la velocidad
+    drawnow limitrate;
+    pause(0.01);
 end
