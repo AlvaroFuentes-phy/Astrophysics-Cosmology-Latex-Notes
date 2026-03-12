@@ -35,8 +35,8 @@ loglog(a_fit, T_fit, 'r--', 'LineWidth', 1.5);
 % Estética de la gráfica
 grid on; ax = gca; ax.GridAlpha = 0.3;
 title('Tercera Ley de Kepler: Relación Log-Log');
-xlabel('Semieje mayor $a$ (UA)', 'Interpreter', 'latex');
-ylabel('Período orbital $T$ (Años)', 'Interpreter', 'latex');
+xlabel('Semieje mayor $a$ (UA)');
+ylabel('Período orbital $T$ (Años)');
 
 % Anotación de la pendiente con mayor precisión
 leyenda_texto = sprintf('Datos orbitales\nAjuste lineal (Pendiente: %.4f)', pendiente);
