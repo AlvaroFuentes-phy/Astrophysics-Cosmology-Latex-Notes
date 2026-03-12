@@ -1,0 +1,38 @@
+
+% r = alpha / (1 + e*cos(phi))
+
+phi = linspace(0, 2*pi, 500);
+alpha = 1; % Parámetro de escala constante para visualización
+
+% Valores de excentricidad para cada cónica
+excentricidades = [0, 0.5, 1, 1.5]; % Círculo, Elipse, Parábola, Hipérbola
+colores = {'b', 'g', 'r', 'm'};
+nombres = {'Círculo (e=0)', 'Elipse (0<e<1)', 'Parábola (e=1)', 'Hipérbola (e>1)'};
+
+figure;
+hold on; grid on; axis equal;
+title('Trayectorias según su excentricidad (1º Ley de Kepler)');
+xlabel('x'); ylabel('y');
+
+for i = 1:length(excentricidades)
+    e = excentricidades(i);
+    
+    % Evitar singularidades en la parábola e hipérbola
+    if e >= 1
+        limite = acos(-1/e);
+        phi_plot = linspace(-limite + 0.1, limite - 0.1, 300);
+    else
+        phi_plot = phi;
+    end
+    
+    r = alpha ./ (1 + e .* cos(phi_plot));
+    x = r .* cos(phi_plot);
+    y = r .* sin(phi_plot);
+    
+    plot(x, y, 'Color', colores{i}, 'LineWidth', 2, 'DisplayName', nombres{i});
+end
+
+plot(0, 0, 'y*', 'MarkerSize', 10, 'LineWidth', 2, 'DisplayName', 'Foco (Centro de fuerzas)');
+legend('Location', 'best');
+xlim([-3 3]); ylim([-3 3]);
+hold off;
