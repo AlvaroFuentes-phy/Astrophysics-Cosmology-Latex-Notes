@@ -1,38 +1,85 @@
-
-% r = alpha / (1 + e*cos(phi))
-
 phi = linspace(0, 2*pi, 500);
-alpha = 1; % Parámetro de escala constante para visualización
+alfa = 1;
 
-% Valores de excentricidad para cada cónica
-excentricidades = [0, 0.5, 1, 1.5]; % Círculo, Elipse, Parábola, Hipérbola
-colores = {'b', 'g', 'r', 'm'};
-nombres = {'Círculo (e=0)', 'Elipse (0<e<1)', 'Parábola (e=1)', 'Hipérbola (e>1)'};
+excentricidades = [0, 0.5, 1, 1.5];
+colores = {'#00BFFF', '#00E676', '#FFD600', '#FF5252'};
+nombres = {'Círculo (e = 0)', 'Elipse (e = 0.5)', 'Parábola (e = 1)', 'Hipérbola (e = 1.5)'};
 
-figure;
+figure('Color', 'k', 'Position', [100 100 900 700]);
+ax = axes('Color', 'k', ...
+          'XColor', 'w', ...
+          'YColor', 'w', ...
+          'GridColor', [0.2 0.2 0.2], ...
+          'GridAlpha', 0.8, ...
+          'FontName', 'Consolas', ...
+          'FontSize', 10);
 hold on; grid on; axis equal;
-title('Trayectorias según su excentricidad (1º Ley de Kepler)');
-xlabel('x'); ylabel('y');
+
+title('Trayectorias Cónicas — 1ª Ley de Kepler', ...
+      'Color', 'w', 'FontSize', 16, 'FontWeight', 'bold', 'FontName', 'Consolas');
+xlabel('x  [u.a.]', 'Color', [0.6 0.6 0.6], 'FontSize', 11, 'FontName', 'Consolas');
+ylabel('y  [u.a.]', 'Color', [0.6 0.6 0.6], 'FontSize', 11, 'FontName', 'Consolas');
+
+annotation('textbox', [0.15 0.88 0.7 0.06], ...
+    'String', 'r = \alpha / (1 + e \cdot cos\phi)', ...
+    'Color', [0.4 0.6 0.9], ...
+    'EdgeColor', 'none', ...
+    'FontSize', 11, 'FontName', 'Consolas', ...
+    'HorizontalAlignment', 'center');
 
 for i = 1:length(excentricidades)
     e = excentricidades(i);
-    
-    % Evitar singularidades en la parábola e hipérbola
+
     if e >= 1
         limite = acos(-1/e);
-        phi_plot = linspace(-limite + 0.1, limite - 0.1, 300);
+        phi_plot = linspace(-limite + 0.08, limite - 0.08, 600);
     else
         phi_plot = phi;
     end
-    
-    r = alpha ./ (1 + e .* cos(phi_plot));
+
+    r = alfa ./ (1 + e .* cos(phi_plot));
     x = r .* cos(phi_plot);
     y = r .* sin(phi_plot);
-    
-    plot(x, y, 'Color', colores{i}, 'LineWidth', 2, 'DisplayName', nombres{i});
+
+    rgb = sscanf(colores{i}(2:end), '%2x%2x%2x', [1 3]) / 255;
+
+    % Halo
+    plot(x, y, 'Color', [rgb 0.18], 'LineWidth', 8, 'HandleVisibility', 'off');
+    % Línea principal
+    plot(x, y, 'Color', [rgb 0.95], 'LineWidth', 2, 'DisplayName', nombres{i});
 end
 
-plot(0, 0, 'y*', 'MarkerSize', 10, 'LineWidth', 2, 'DisplayName', 'Foco (Centro de fuerzas)');
-legend('Location', 'best');
-xlim([-3 3]); ylim([-3 3]);
+% Foco principal
+plot(0, 0, 'o', ...
+     'MarkerSize', 10, ...
+     'MarkerFaceColor', 'y', ...
+     'MarkerEdgeColor', 'w', ...
+     'LineWidth', 1.5, ...
+     'DisplayName', 'Foco principal');
+
+% Foco secundario elipse
+a_elipse = alfa / (1 - 0.5^2);
+c_elipse = 0.5 * a_elipse;
+plot(-c_elipse, 0, 'o', ...
+     'MarkerSize', 6, ...
+     'MarkerFaceColor', [0.4 0.6 0.4], ...
+     'MarkerEdgeColor', 'w', ...
+     'LineWidth', 1.2, ...
+     'DisplayName', 'Foco secundario (elipse)');
+
+xline(0, 'Color', [0.25 0.25 0.25], 'LineWidth', 0.8, 'HandleVisibility', 'off');
+yline(0, 'Color', [0.25 0.25 0.25], 'LineWidth', 0.8, 'HandleVisibility', 'off');
+
+lgd = legend('Location', 'northeast');
+lgd.TextColor  = 'w';
+lgd.Color      = 'k';
+lgd.EdgeColor  = [0.3 0.3 0.3];
+lgd.FontName   = 'Consolas';
+lgd.FontSize   = 9;
+
+xlim([-3.5 3.5]); ylim([-3 3]);
+ax.TickDir   = 'out';
+ax.LineWidth = 1.2;
+ax.Box       = 'off';
+
 hold off;
